@@ -12,13 +12,25 @@ server.get("/", (req, res) => {
   res.send("You got the server");
 });
 
-server.get("/users", (req, res) => {
+server.get("/api/users", (req, res) => {
   Users.find()
     .then(users => {
       res.status(200).json(users);
     })
     .catch(error => {
       res.status(500).json({ message: "error getting the list of users" });
+    });
+});
+
+server.post("/api/users", (req, res) => {
+  const newUser = req.body;
+  console.log(newUser);
+  Users.insert(newUser)
+    .then(user => {
+      res.status(201).json(user);
+    })
+    .catch(error => {
+      res.status(500).json({ message: "error adding new user" });
     });
 });
 
