@@ -15,13 +15,21 @@ server.get("/", (req, res) => {
 server.post("/api/users", (req, res) => {
   const newUser = req.body;
   console.log(newUser);
-  Users.insert(newUser)
-    .then(user => {
-      res.status(201).json(user);
-    })
-    .catch(error => {
-      res.status(500).json({ message: "error adding new user" });
-    });
+  if (!newUser.name || !newUser.bio) {
+    res
+      .status(400)
+      .json({ message: "Please provide name and bio for the user" });
+  } else {
+    Users.insert(newUser)
+      .then(user => {
+        res.status(201).json(user);
+      })
+      .catch(error => {
+        res.status(500).json({
+          message: "There was an error while saving the user to the database"
+        });
+      });
+  }
 });
 
 server.get("/api/users", (req, res) => {
