@@ -38,18 +38,29 @@ server.get("/api/users", (req, res) => {
       res.status(200).json(users);
     })
     .catch(error => {
-      res.status(500).json({ message: "error getting the list of users" });
+      res
+        .status(500)
+        .json({ message: "The users information could not be retrieved." });
     });
 });
 
 server.get("/api/users/:id", (req, res) => {
   const userId = req.params.id;
+
   Users.findById(userId)
     .then(user => {
-      res.status(200).json(user);
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res
+          .status(404)
+          .json({ message: "The user with the specified ID does not exist." });
+      }
     })
     .catch(error => {
-      res.status(500).json({ message: "error getting requested user" });
+      res
+        .status(500)
+        .json({ message: "The user information could not be retrieved." });
     });
 });
 
