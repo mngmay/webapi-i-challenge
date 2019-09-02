@@ -45,5 +45,17 @@ server.get("/api/users/:id", (req, res) => {
     });
 });
 
+server.delete("/api/users/:id", (req, res) => {
+  const userId = req.params.id;
+
+  Users.remove(userId)
+    .then(user => {
+      res.status(200).json({ message: "user deleted successfully" });
+    })
+    .catch(error => {
+      res.status(500).json({ message: "error deleting the user" });
+    });
+});
+
 const port = 3000;
 server.listen(port, () => console.log("\napi running\n"));
