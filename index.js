@@ -57,5 +57,22 @@ server.delete("/api/users/:id", (req, res) => {
     });
 });
 
+server.put("/api/users/:id", (req, res) => {
+  const id = req.params.id;
+  const changes = req.body;
+
+  Users.update(id, changes)
+    .then(updated => {
+      if (updated) {
+        res.status(200).json(updated);
+      } else {
+        res.status(404).json({ message: "user not found" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: "error updating user" });
+    });
+});
+
 const port = 3000;
 server.listen(port, () => console.log("\napi running\n"));
